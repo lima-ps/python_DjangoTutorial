@@ -13,8 +13,13 @@ class Question(models.Model):
     def __str__(self):  #esse metodo vai permitir que quando o Objeto for chamado ele possa ser passado como string para o console.
         return self.question_text
 
+    #versão com bug. Ele retorna True mesmo se for postado em data futura
+    '''def was_published_recently(self):
+        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)'''
+
     def was_published_recently(self):
-        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+        now = timezone.now()
+        return now - datetime.timedelta(days=1) <= self.pub_date <= now
 
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
